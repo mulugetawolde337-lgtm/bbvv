@@ -14,16 +14,260 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      business_members: {
+        Row: {
+          business_id: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_members_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      businesses: {
+        Row: {
+          created_at: string
+          credits: number
+          id: string
+          name: string
+          owner_id: string | null
+          plan: Database["public"]["Enums"]["plan_tier"]
+          rate_limit_per_min: number
+          status: Database["public"]["Enums"]["business_status"]
+        }
+        Insert: {
+          created_at?: string
+          credits?: number
+          id?: string
+          name: string
+          owner_id?: string | null
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          rate_limit_per_min?: number
+          status?: Database["public"]["Enums"]["business_status"]
+        }
+        Update: {
+          created_at?: string
+          credits?: number
+          id?: string
+          name?: string
+          owner_id?: string | null
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          rate_limit_per_min?: number
+          status?: Database["public"]["Enums"]["business_status"]
+        }
+        Relationships: []
+      }
+      fraud_logs: {
+        Row: {
+          business_id: string | null
+          created_at: string
+          details: Json | null
+          id: string
+          kind: string
+          user_id: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          kind: string
+          user_id?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+          kind?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fraud_logs_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mother_api_logs: {
+        Row: {
+          allowed: boolean
+          business_id: string | null
+          created_at: string
+          endpoint: string | null
+          id: string
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          allowed: boolean
+          business_id?: string | null
+          created_at?: string
+          endpoint?: string | null
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          allowed?: boolean
+          business_id?: string | null
+          created_at?: string
+          endpoint?: string | null
+          id?: string
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mother_api_logs_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number | null
+          business_id: string
+          created_at: string
+          id: string
+          message: string | null
+          performed_by: string | null
+          qr_payload: string | null
+          recipient: string | null
+          result: Database["public"]["Enums"]["tx_result"]
+          tx_reference: string | null
+        }
+        Insert: {
+          amount?: number | null
+          business_id: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          performed_by?: string | null
+          qr_payload?: string | null
+          recipient?: string | null
+          result: Database["public"]["Enums"]["tx_result"]
+          tx_reference?: string | null
+        }
+        Update: {
+          amount?: number | null
+          business_id?: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          performed_by?: string | null
+          qr_payload?: string | null
+          recipient?: string | null
+          result?: Database["public"]["Enums"]["tx_result"]
+          tx_reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_business_member: {
+        Args: { _business_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_business_role: {
+        Args: {
+          _business_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "owner" | "manager" | "cashier"
+      business_status: "active" | "suspended" | "limited"
+      plan_tier: "free" | "basic" | "pro"
+      tx_result: "success" | "failed" | "duplicate" | "blocked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +394,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "owner", "manager", "cashier"],
+      business_status: ["active", "suspended", "limited"],
+      plan_tier: ["free", "basic", "pro"],
+      tx_result: ["success", "failed", "duplicate", "blocked"],
+    },
   },
 } as const
