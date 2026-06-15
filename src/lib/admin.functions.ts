@@ -29,7 +29,7 @@ export const adminUpdateBusiness = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context as never);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const patch: Record<string, unknown> = {};
+    const patch: { status?: "active"|"suspended"|"limited"; credits?: number; plan?: "free"|"basic"|"pro" } = {};
     if (data.status) patch.status = data.status;
     if (typeof data.credits === "number") patch.credits = data.credits;
     if (data.plan) patch.plan = data.plan;
