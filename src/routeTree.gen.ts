@@ -19,6 +19,10 @@ import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedScannerRouteImport } from './routes/_authenticated/scanner'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminFraudRouteImport } from './routes/_authenticated/admin.fraud'
+import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
+import { Route as AuthenticatedAdminApiUsageRouteImport } from './routes/_authenticated/admin.api-usage'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -71,6 +75,28 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminFraudRoute = AuthenticatedAdminFraudRouteImport.update({
+  id: '/admin/fraud',
+  path: '/admin/fraud',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminBusinessesRoute =
+  AuthenticatedAdminBusinessesRouteImport.update({
+    id: '/admin/businesses',
+    path: '/admin/businesses',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminApiUsageRoute =
+  AuthenticatedAdminApiUsageRouteImport.update({
+    id: '/admin/api-usage',
+    path: '/admin/api-usage',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +108,10 @@ export interface FileRoutesByFullPath {
   '/staff': typeof AuthenticatedStaffRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
   '/transactions': typeof AuthenticatedTransactionsRoute
+  '/admin/api-usage': typeof AuthenticatedAdminApiUsageRoute
+  '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
+  '/admin/fraud': typeof AuthenticatedAdminFraudRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,6 +123,10 @@ export interface FileRoutesByTo {
   '/staff': typeof AuthenticatedStaffRoute
   '/subscription': typeof AuthenticatedSubscriptionRoute
   '/transactions': typeof AuthenticatedTransactionsRoute
+  '/admin/api-usage': typeof AuthenticatedAdminApiUsageRoute
+  '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
+  '/admin/fraud': typeof AuthenticatedAdminFraudRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,6 +140,10 @@ export interface FileRoutesById {
   '/_authenticated/staff': typeof AuthenticatedStaffRoute
   '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
   '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
+  '/_authenticated/admin/api-usage': typeof AuthenticatedAdminApiUsageRoute
+  '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
+  '/_authenticated/admin/fraud': typeof AuthenticatedAdminFraudRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,6 +157,10 @@ export interface FileRouteTypes {
     | '/staff'
     | '/subscription'
     | '/transactions'
+    | '/admin/api-usage'
+    | '/admin/businesses'
+    | '/admin/fraud'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -130,6 +172,10 @@ export interface FileRouteTypes {
     | '/staff'
     | '/subscription'
     | '/transactions'
+    | '/admin/api-usage'
+    | '/admin/businesses'
+    | '/admin/fraud'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -142,6 +188,10 @@ export interface FileRouteTypes {
     | '/_authenticated/staff'
     | '/_authenticated/subscription'
     | '/_authenticated/transactions'
+    | '/_authenticated/admin/api-usage'
+    | '/_authenticated/admin/businesses'
+    | '/_authenticated/admin/fraud'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -223,6 +273,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/fraud': {
+      id: '/_authenticated/admin/fraud'
+      path: '/admin/fraud'
+      fullPath: '/admin/fraud'
+      preLoaderRoute: typeof AuthenticatedAdminFraudRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/businesses': {
+      id: '/_authenticated/admin/businesses'
+      path: '/admin/businesses'
+      fullPath: '/admin/businesses'
+      preLoaderRoute: typeof AuthenticatedAdminBusinessesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/api-usage': {
+      id: '/_authenticated/admin/api-usage'
+      path: '/admin/api-usage'
+      fullPath: '/admin/api-usage'
+      preLoaderRoute: typeof AuthenticatedAdminApiUsageRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -233,6 +311,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
   AuthenticatedSubscriptionRoute: typeof AuthenticatedSubscriptionRoute
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
+  AuthenticatedAdminApiUsageRoute: typeof AuthenticatedAdminApiUsageRoute
+  AuthenticatedAdminBusinessesRoute: typeof AuthenticatedAdminBusinessesRoute
+  AuthenticatedAdminFraudRoute: typeof AuthenticatedAdminFraudRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -242,6 +324,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedStaffRoute: AuthenticatedStaffRoute,
   AuthenticatedSubscriptionRoute: AuthenticatedSubscriptionRoute,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
+  AuthenticatedAdminApiUsageRoute: AuthenticatedAdminApiUsageRoute,
+  AuthenticatedAdminBusinessesRoute: AuthenticatedAdminBusinessesRoute,
+  AuthenticatedAdminFraudRoute: AuthenticatedAdminFraudRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
