@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Zap, ScanLine, ShieldCheck, Activity, Lock, Gauge } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import heroScan from "@/assets/hero-scan.jpg";
 import imgRestaurant from "@/assets/usecase-restaurant.jpg";
 import imgBurger from "@/assets/usecase-burger.jpg";
@@ -10,6 +11,7 @@ import imgCoffee from "@/assets/usecase-coffee.jpg";
 import imgSupermarket from "@/assets/usecase-supermarket.jpg";
 import imgPharmacy from "@/assets/usecase-pharmacy.jpg";
 import imgMerchant from "@/assets/usecase-merchant.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,10 +45,11 @@ function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <Link to="/" className="flex items-center gap-2 font-semibold tracking-tight">
-          <Zap className="h-5 w-5 text-primary" />
+        <Link to="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
+          <Logo className="h-8 w-8 rounded-md" />
           <span>BEU <span className="text-primary">VERIFY</span></span>
         </Link>
+
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
           <Link to="/pricing" preload="intent" className="hover:text-foreground">Pricing</Link>
           <a href="#usecases" className="hover:text-foreground">Who it's for</a>

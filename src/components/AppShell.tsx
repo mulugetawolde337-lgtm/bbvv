@@ -6,8 +6,10 @@ import { getMyContext } from "@/lib/beu.functions";
 import { supabase } from "@/integrations/supabase/client";
 import {
   LayoutDashboard, ScanLine, Receipt, Users, CreditCard, Settings, Shield,
-  Zap, LogOut, ChevronDown, Building2, Activity, AlertTriangle,
+  LogOut, ChevronDown, Building2, Activity, AlertTriangle, Radio,
 } from "lucide-react";
+import { Logo } from "@/components/Logo";
+
 
 const BUSINESS_KEY = "beu.activeBusinessId";
 
@@ -47,10 +49,12 @@ const nav = [
 
 const adminNav = [
   { to: "/admin", label: "Control Panel", icon: Shield },
+  { to: "/admin/mother-api", label: "Mother API", icon: Radio },
   { to: "/admin/businesses", label: "Businesses", icon: Building2 },
   { to: "/admin/api-usage", label: "API Usage", icon: Activity },
   { to: "/admin/fraud", label: "Fraud Logs", icon: AlertTriangle },
 ] as const;
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -68,10 +72,11 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-background text-foreground">
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r border-border bg-sidebar transition-transform md:static md:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
-        <div className="flex h-16 items-center gap-2 border-b border-border px-5">
-          <Zap className="h-5 w-5 text-primary" />
+        <div className="flex h-16 items-center gap-2.5 border-b border-border px-5">
+          <Logo className="h-8 w-8 rounded-md" />
           <Link to="/dashboard" className="font-semibold tracking-tight">BEU <span className="text-primary">VERIFY</span></Link>
         </div>
+
         <nav className="flex flex-col gap-0.5 p-3 text-sm">
           {nav.map((n) => {
             const active = path === n.to;

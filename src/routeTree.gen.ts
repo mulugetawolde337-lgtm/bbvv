@@ -20,6 +20,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedScannerRouteImport } from './routes/_authenticated/scanner'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminMotherApiRouteImport } from './routes/_authenticated/admin.mother-api'
 import { Route as AuthenticatedAdminFraudRouteImport } from './routes/_authenticated/admin.fraud'
 import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
 import { Route as AuthenticatedAdminApiUsageRouteImport } from './routes/_authenticated/admin.api-usage'
@@ -80,6 +81,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminMotherApiRoute =
+  AuthenticatedAdminMotherApiRouteImport.update({
+    id: '/admin/mother-api',
+    path: '/admin/mother-api',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminFraudRoute = AuthenticatedAdminFraudRouteImport.update({
   id: '/admin/fraud',
   path: '/admin/fraud',
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/admin/api-usage': typeof AuthenticatedAdminApiUsageRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/fraud': typeof AuthenticatedAdminFraudRoute
+  '/admin/mother-api': typeof AuthenticatedAdminMotherApiRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -126,6 +134,7 @@ export interface FileRoutesByTo {
   '/admin/api-usage': typeof AuthenticatedAdminApiUsageRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/fraud': typeof AuthenticatedAdminFraudRoute
+  '/admin/mother-api': typeof AuthenticatedAdminMotherApiRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -143,6 +152,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/api-usage': typeof AuthenticatedAdminApiUsageRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/_authenticated/admin/fraud': typeof AuthenticatedAdminFraudRoute
+  '/_authenticated/admin/mother-api': typeof AuthenticatedAdminMotherApiRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/admin/api-usage'
     | '/admin/businesses'
     | '/admin/fraud'
+    | '/admin/mother-api'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/admin/api-usage'
     | '/admin/businesses'
     | '/admin/fraud'
+    | '/admin/mother-api'
     | '/admin'
   id:
     | '__root__'
@@ -191,6 +203,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/api-usage'
     | '/_authenticated/admin/businesses'
     | '/_authenticated/admin/fraud'
+    | '/_authenticated/admin/mother-api'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -280,6 +293,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/mother-api': {
+      id: '/_authenticated/admin/mother-api'
+      path: '/admin/mother-api'
+      fullPath: '/admin/mother-api'
+      preLoaderRoute: typeof AuthenticatedAdminMotherApiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/fraud': {
       id: '/_authenticated/admin/fraud'
       path: '/admin/fraud'
@@ -314,6 +334,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminApiUsageRoute: typeof AuthenticatedAdminApiUsageRoute
   AuthenticatedAdminBusinessesRoute: typeof AuthenticatedAdminBusinessesRoute
   AuthenticatedAdminFraudRoute: typeof AuthenticatedAdminFraudRoute
+  AuthenticatedAdminMotherApiRoute: typeof AuthenticatedAdminMotherApiRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
@@ -327,6 +348,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminApiUsageRoute: AuthenticatedAdminApiUsageRoute,
   AuthenticatedAdminBusinessesRoute: AuthenticatedAdminBusinessesRoute,
   AuthenticatedAdminFraudRoute: AuthenticatedAdminFraudRoute,
+  AuthenticatedAdminMotherApiRoute: AuthenticatedAdminMotherApiRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
