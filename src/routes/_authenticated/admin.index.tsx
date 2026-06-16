@@ -27,11 +27,13 @@ function AdminHome() {
           <Stat label="Blocked calls" value={s?.blockedCalls ?? 0} className="text-warning" />
           <Stat label="Fraud events" value={s?.fraud ?? 0} icon={AlertTriangle} className="text-destructive" />
         </div>
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          <QuickLink to="/admin/mother-api" title="⚡ Mother API" desc="Configure the central verification endpoint." highlight />
           <QuickLink to="/admin/businesses" title="Manage businesses" desc="Suspend, top up credits, change plans." />
           <QuickLink to="/admin/api-usage" title="API usage" desc="Every Mother API call, allowed or blocked." />
           <QuickLink to="/admin/fraud" title="Fraud logs" desc="Duplicates and suspicious activity." />
         </div>
+
       </div>
     </AppShell>
   );
@@ -47,12 +49,13 @@ function Stat({ label, value, icon: Icon, className = "" }: { label: string; val
     </div>
   );
 }
-function QuickLink({ to, title, desc }: { to: "/admin/businesses" | "/admin/api-usage" | "/admin/fraud"; title: string; desc: string }) {
+function QuickLink({ to, title, desc, highlight = false }: { to: "/admin/businesses" | "/admin/api-usage" | "/admin/fraud" | "/admin/mother-api"; title: string; desc: string; highlight?: boolean }) {
   return (
-    <Link to={to} className="rounded-2xl border border-border bg-card p-5 hover:border-primary/40">
+    <Link to={to} className={`rounded-2xl border bg-card p-5 transition-colors ${highlight ? "border-primary/60 beu-glow" : "border-border hover:border-primary/40"}`}>
       <div className="font-semibold">{title}</div>
       <div className="mt-1 text-sm text-muted-foreground">{desc}</div>
       <div className="mt-3 text-xs text-primary">Open →</div>
     </Link>
   );
 }
+
