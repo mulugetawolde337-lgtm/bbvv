@@ -1,11 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Zap, ScanLine, ShieldCheck, Activity, Lock, Gauge } from "lucide-react";
+import heroScan from "@/assets/hero-scan.jpg";
+import imgRestaurant from "@/assets/usecase-restaurant.jpg";
+import imgBurger from "@/assets/usecase-burger.jpg";
+import imgCafe from "@/assets/usecase-cafe.jpg";
+import imgBoutique from "@/assets/usecase-boutique.jpg";
+import imgCosmetics from "@/assets/usecase-cosmetics.jpg";
+import imgCoffee from "@/assets/usecase-coffee.jpg";
+import imgSupermarket from "@/assets/usecase-supermarket.jpg";
+import imgPharmacy from "@/assets/usecase-pharmacy.jpg";
+import imgMerchant from "@/assets/usecase-merchant.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Beu Verify — Verify Ethiopian Payments by QR" },
-      { name: "description", content: "Scan existing bank & Telebirr QR codes. Validate transactions in under 2 seconds. Centralized control, fraud detection, and per-business credits." },
+      { name: "description", content: "Scan existing bank & Telebirr QR codes. Validate transactions in under 2 seconds. Built for restaurants, cafes, pharmacies, supermarkets, boutiques and small merchants." },
+      { property: "og:image", content: heroScan },
+    ],
+    links: [
+      { rel: "preload", as: "image", href: heroScan, fetchpriority: "high" },
     ],
   }),
   component: Landing,
@@ -16,7 +30,7 @@ function Landing() {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <Hero />
-      <Logos />
+      <UseCases />
       <Features />
       <Flow />
       <CTA />
@@ -34,13 +48,14 @@ function Nav() {
           <span>BEU <span className="text-primary">VERIFY</span></span>
         </Link>
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
-          <Link to="/pricing" className="hover:text-foreground">Pricing</Link>
+          <Link to="/pricing" preload="intent" className="hover:text-foreground">Pricing</Link>
+          <a href="#usecases" className="hover:text-foreground">Who it's for</a>
           <a href="#features" className="hover:text-foreground">Features</a>
           <a href="#flow" className="hover:text-foreground">How it works</a>
         </nav>
         <div className="flex items-center gap-2">
-          <Link to="/auth" className="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">Sign in</Link>
-          <Link to="/auth" search={{ mode: "signup" }} className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Get started</Link>
+          <Link to="/auth" preload="intent" className="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">Sign in</Link>
+          <Link to="/auth" preload="intent" search={{ mode: "signup" }} className="rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Get started</Link>
         </div>
       </div>
     </header>
@@ -52,56 +67,84 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 beu-grid opacity-50" />
       <div className="absolute left-1/2 top-0 -z-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
-      <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 md:pt-32">
-        <div className="mx-auto max-w-3xl text-center">
+      <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pb-24 pt-20 md:grid-cols-2 md:pt-28 md:items-center">
+        <div>
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
             <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Live in Ethiopia · Sub-2s verification
           </div>
-          <h1 className="text-5xl font-bold tracking-tight md:text-7xl">
+          <h1 className="text-5xl font-bold tracking-tight md:text-6xl">
             The verification <span className="text-primary text-glow">brain</span> for Ethiopian payments.
           </h1>
-          <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-            Beu Verify scans <span className="text-foreground">existing</span> bank & Telebirr QR codes and validates every transaction through one controlled API layer — with fraud protection, credits, and central kill-switch.
+          <p className="mt-6 text-lg text-muted-foreground">
+            Scan <span className="text-foreground">existing</span> bank & Telebirr QR codes and validate every transaction through one controlled API — with fraud protection and central kill-switch.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/auth" search={{ mode: "signup" }} className="rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 beu-glow">
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/auth" preload="intent" search={{ mode: "signup" }} className="rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 beu-glow">
               Start verifying — free
             </Link>
-            <Link to="/pricing" className="rounded-md border border-border px-5 py-3 text-sm font-semibold hover:bg-accent">See pricing</Link>
+            <Link to="/pricing" preload="intent" className="rounded-md border border-border px-5 py-3 text-sm font-semibold hover:bg-accent">See pricing</Link>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">20 free verifications · No card required</p>
         </div>
-
-        {/* Mock terminal */}
-        <div className="mx-auto mt-16 max-w-2xl rounded-2xl border border-border bg-card/80 p-1 backdrop-blur beu-glow">
-          <div className="rounded-xl bg-background/60 p-6 font-mono text-xs md:text-sm">
-            <div className="mb-3 flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-destructive/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
-              <span className="ml-2 text-muted-foreground">mother-api · /verify</span>
-            </div>
-            <pre className="whitespace-pre-wrap text-muted-foreground">
-{`> POST /verify { qr: "CBE:0012-3456", ref: "ETB7X9Q2K" }
-✓ recipient matched (CBE · Fab Cafe)
-✓ amount confirmed: 350.00 ETB
-✓ not duplicate · fraud_score: 0.01
-`}<span className="text-success">→ SUCCESS · 1.2s</span>
-            </pre>
-          </div>
+        <div className="relative">
+          <div className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl" />
+          <img
+            src={heroScan}
+            alt="Cashier scanning a bank QR code on phone"
+            width={1024}
+            height={1024}
+            fetchPriority="high"
+            className="relative aspect-square w-full rounded-2xl border border-border object-cover beu-glow"
+          />
         </div>
       </div>
     </section>
   );
 }
 
-function Logos() {
+function UseCases() {
+  const cases = [
+    { img: imgRestaurant, t: "Restaurants", d: "Verify every dine-in & takeaway payment at the counter." },
+    { img: imgBurger, t: "Burger houses", d: "Keep the line moving — verify in under 2 seconds." },
+    { img: imgCafe, t: "Cafés", d: "No more screenshot fraud at the till." },
+    { img: imgCoffee, t: "Coffee shops", d: "Confirm payment before the cup leaves the bar." },
+    { img: imgBoutique, t: "Boutiques", d: "Protect high-ticket fashion sales from fake receipts." },
+    { img: imgCosmetics, t: "Cosmetics", d: "Verify mobile-money transfers for every product." },
+    { img: imgSupermarket, t: "Supermarkets", d: "Fast checkout verification at every till." },
+    { img: imgPharmacy, t: "Pharmacies", d: "Audit-friendly proof for every prescription paid." },
+    { img: imgMerchant, t: "Small merchants (ሱቅ)", d: "From kiosks to neighborhood shops — proof in seconds." },
+  ];
   return (
-    <div className="border-y border-border/60 bg-card/30 py-6">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-5 text-xs uppercase tracking-widest text-muted-foreground">
-        <span>CBE</span><span>·</span><span>Dashen</span><span>·</span><span>Telebirr</span><span>·</span><span>Awash</span><span>·</span><span>Abyssinia</span><span>·</span><span>Wegagen</span>
+    <section id="usecases" className="border-t border-border/60 bg-card/30 py-24">
+      <div className="mx-auto max-w-6xl px-5">
+        <div className="mb-12 max-w-2xl">
+          <div className="text-xs uppercase tracking-widest text-primary">Built for</div>
+          <h2 className="mt-2 text-3xl font-bold md:text-4xl">Every Ethiopian business that takes payments.</h2>
+          <p className="mt-3 text-muted-foreground">If you accept bank transfers or Telebirr, Beu Verify works for you — out of the box.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {cases.map((c) => (
+            <div key={c.t} className="group overflow-hidden rounded-2xl border border-border bg-background transition-colors hover:border-primary/40">
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={c.img}
+                  alt={c.t}
+                  width={1024}
+                  height={768}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+              </div>
+              <div className="p-5">
+                <h3 className="font-semibold">{c.t}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{c.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -169,7 +212,7 @@ function CTA() {
       <h2 className="text-4xl font-bold md:text-5xl">Stop chasing screenshots.</h2>
       <p className="mx-auto mt-4 max-w-xl text-muted-foreground">Verify the payment, not the photo. Get 20 free verifications and try the flow in two minutes.</p>
       <div className="mt-8 flex justify-center gap-3">
-        <Link to="/auth" search={{ mode: "signup" }} className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 beu-glow">Get started free</Link>
+        <Link to="/auth" preload="intent" search={{ mode: "signup" }} className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 beu-glow">Get started free</Link>
       </div>
     </section>
   );

@@ -76,7 +76,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {nav.map((n) => {
             const active = path === n.to;
             return (
-              <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
+              <Link key={n.to} to={n.to} preload="intent" onClick={() => setOpen(false)}
                 className={`flex items-center gap-2.5 rounded-md px-3 py-2 transition-colors ${active ? "bg-primary text-primary-foreground font-semibold" : "text-muted-foreground hover:bg-accent hover:text-foreground"}`}>
                 <n.icon className="h-4 w-4" /> {n.label}
               </Link>
@@ -88,7 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               {adminNav.map((n) => {
                 const active = path === n.to || (n.to !== "/admin" && path.startsWith(n.to));
                 return (
-                  <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
+                  <Link key={n.to} to={n.to} preload="intent" onClick={() => setOpen(false)}
                     className={`flex items-center gap-2.5 rounded-md px-3 py-2 transition-colors ${active ? "bg-primary text-primary-foreground font-semibold" : "text-muted-foreground hover:bg-accent hover:text-foreground"}`}>
                     <n.icon className="h-4 w-4" /> {n.label}
                   </Link>
