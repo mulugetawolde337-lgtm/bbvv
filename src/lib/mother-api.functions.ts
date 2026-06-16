@@ -2,10 +2,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
-async function assertAdmin(context: { supabase: { rpc: (n: string, a: Record<string, unknown>) => Promise<{ data: boolean | null }> }; userId: string }) {
+async function assertAdmin(context: { supabase: { rpc: (n: "has_role", a: { _user_id: string; _role: "admin" }) => Promise<{ data: boolean | null }> }; userId: string }) {
   const { data } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
   if (!data) throw new Error("Forbidden — admin only");
 }
+
 
 export const getMotherApiSettings = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
