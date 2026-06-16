@@ -13,7 +13,7 @@ async function assertAdmin(userId: string) {
 export const getMotherApiSettings = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin(context);
+    await assertAdmin(context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data } = await supabaseAdmin
       .from("mother_api_settings")
@@ -37,7 +37,7 @@ export const updateMotherApiSettings = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => updateSchema.parse(d))
   .handler(async ({ data, context }) => {
-    await assertAdmin(context);
+    await assertAdmin(context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: existing } = await supabaseAdmin
       .from("mother_api_settings").select("id").limit(1).maybeSingle();
@@ -65,7 +65,7 @@ export const updateMotherApiSettings = createServerFn({ method: "POST" })
 export const testMotherApi = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin(context);
+    await assertAdmin(context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: s } = await supabaseAdmin
       .from("mother_api_settings").select("*").limit(1).maybeSingle();
