@@ -152,6 +152,45 @@ export type Database = {
           },
         ]
       }
+      mother_api_settings: {
+        Row: {
+          api_url: string | null
+          auth_header: string
+          auth_token: string | null
+          created_at: string
+          enabled: boolean
+          id: string
+          mode: string
+          notes: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          api_url?: string | null
+          auth_header?: string
+          auth_token?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          mode?: string
+          notes?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          api_url?: string | null
+          auth_header?: string
+          auth_token?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          mode?: string
+          notes?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
