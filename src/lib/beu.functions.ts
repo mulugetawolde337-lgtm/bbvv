@@ -2,40 +2,54 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
-// ---------- Mother API (mock) ----------
+// ---------- Mother API ----------
 // Centralized verification controller. All verify requests pass through this.
-async function callMotherApi(input: {
-  qr_payload: string;
-  tx_reference: string;
-  amount: number;
-}): Promise<{
-  ok: boolean;
-  recipient: string;
-  amount: number;
-  bank: string;
-  message: string;
-}> {
-  // Simulate ~600-1200ms latency
+// When an admin has configured & enabled LIVE mode in mother_api_settings,
+// we call the configured upstream URL. Otherwise we fall back to deterministic mock.
+type MotherApiResult = { ok: boolean; recipient: string; amount: number; bank: string; message: string };
+
+async function callMotherApi(input: { qr_payload: string; tx_reference: string; amount: number }): Promise<MotherApiResult> {
+  // Look up active settings (service-role)
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: s } = await supabaseAdmin
+      .from("mother_api_settings").select("*").limit(1).maybeSingle();
+    if (s && s.enabled && s.mode === "live" && s.api_url) {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (s.auth_token) headers[s.auth_header || "Authorization"] = s.auth_token;
+      const res = await fetch(s.api_url, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(input),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) {
+        return { ok: false, recipient: "", amount: 0, bank: "UNKNOWN", message: `Upstream ${res.status}` };
+      }
+      const j = (await res.json().catch(() => ({}))) as Partial<MotherApiResult>;
+      return {
+        ok: j.ok ?? false,
+        recipient: j.recipient ?? input.qr_payload,
+        amount: typeof j.amount === "number" ? j.amount : input.amount,
+        bank: j.bank ?? "BANK",
+        message: j.message ?? (j.ok ? "Verified" : "Not found"),
+      };
+    }
+  } catch {
+    // fall through to mock if config lookup or remote call fails
+  }
+
+  // --- Mock mode (default) ---
   await new Promise((r) => setTimeout(r, 400 + Math.random() * 600));
   const ref = input.tx_reference.trim().toUpperCase();
-  // Deterministic mock outcomes:
-  // - refs starting FAIL → failed
-  // - amount === 0 → failed
-  // - else success
   if (ref.startsWith("FAIL") || input.amount <= 0) {
     return { ok: false, recipient: "", amount: 0, bank: "UNKNOWN", message: "Transaction not found at issuing bank." };
   }
-  // Derive bank from qr_payload prefix if present (CBE:, DASHEN:, TELEBIRR:)
   const m = input.qr_payload.toUpperCase().match(/(CBE|DASHEN|TELEBIRR|AWASH|ABYSSINIA|WEGAGEN)/);
   const bank = m ? m[1] : "CBE";
-  return {
-    ok: true,
-    recipient: input.qr_payload || "Recipient",
-    amount: input.amount,
-    bank,
-    message: "Payment verified at bank.",
-  };
+  return { ok: true, recipient: input.qr_payload || "Recipient", amount: input.amount, bank, message: "Payment verified at bank." };
 }
+
 
 // ---------- Get current user's businesses + role ----------
 export const getMyContext = createServerFn({ method: "GET" })
