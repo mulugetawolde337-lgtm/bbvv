@@ -33,8 +33,13 @@ function AdminBusinesses() {
           <table className="w-full text-sm">
             <thead className="bg-muted/30 text-left text-xs uppercase tracking-widest text-muted-foreground">
               <tr>
-                <th className="px-4 py-3">Business</th><th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Plan</th><th className="px-4 py-3 text-right">Credits</th>
+                <th className="px-4 py-3">Business</th>
+                <th className="px-4 py-3">Owner</th>
+                <th className="px-4 py-3">Signed up</th>
+                <th className="px-4 py-3">Last sign-in</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Plan</th>
+                <th className="px-4 py-3 text-right">Credits</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -44,6 +49,19 @@ function AdminBusinesses() {
                   <td className="px-4 py-3">
                     <div className="font-semibold">{b.name}</div>
                     <div className="font-mono text-[10px] text-muted-foreground">{b.id.slice(0, 8)}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="font-medium">{b.owner_name ?? "—"}</div>
+                    <div className="text-xs text-muted-foreground">{b.owner_email ?? "—"}</div>
+                    {b.owner_confirmed === false && (
+                      <div className="mt-1 inline-block rounded bg-warning/10 px-1.5 py-0.5 text-[10px] text-warning">unconfirmed</div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
+                    {new Date(b.created_at).toLocaleString()}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
+                    {b.owner_last_sign_in ? new Date(b.owner_last_sign_in).toLocaleString() : "never"}
                   </td>
                   <td className="px-4 py-3">
                     <select value={b.status} onChange={(e) => patch(b.id, { status: e.target.value as never })} className="bg-input border border-border rounded px-2 py-1 text-xs">
@@ -64,7 +82,7 @@ function AdminBusinesses() {
                   </td>
                 </tr>
               ))}
-              {!q.data?.length && <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">No businesses yet.</td></tr>}
+              {!q.data?.length && <tr><td colSpan={8} className="px-4 py-10 text-center text-muted-foreground">No businesses yet.</td></tr>}
             </tbody>
           </table>
         </div>

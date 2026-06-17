@@ -14,8 +14,28 @@ export const adminListBusinesses = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     await assertAdmin(context as never);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data } = await supabaseAdmin.from("businesses").select("*").order("created_at", { ascending: false });
-    return data ?? [];
+    const { data: businesses } = await supabaseAdmin
+      .from("businesses").select("*").order("created_at", { ascending: false });
+    const ownerIds = Array.from(new Set((businesses ?? []).map((b) => b.owner_id).filter(Boolean))) as string[];
+    const [{ data: profiles }, authList] = await Promise.all([
+      ownerIds.length
+        ? supabaseAdmin.from("profiles").select("id, email, full_name").in("id", ownerIds)
+        : Promise.resolve({ data: [] as { id: string; email: string | null; full_name: string | null }[] }),
+      supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 }),
+    ]);
+    const profileMap = new Map((profiles ?? []).map((p) => [p.id, p]));
+    const authMap = new Map((authList.data?.users ?? []).map((u) => [u.id, u]));
+    return (businesses ?? []).map((b) => {
+      const p = b.owner_id ? profileMap.get(b.owner_id) : null;
+      const a = b.owner_id ? authMap.get(b.owner_id) : null;
+      return {
+        ...b,
+        owner_email: p?.email ?? a?.email ?? null,
+        owner_name: p?.full_name ?? null,
+        owner_last_sign_in: a?.last_sign_in_at ?? null,
+        owner_confirmed: a ? !!a.email_confirmed_at : null,
+      };
+    });
   });
 
 export const adminUpdateBusiness = createServerFn({ method: "POST" })
