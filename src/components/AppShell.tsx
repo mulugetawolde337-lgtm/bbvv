@@ -50,6 +50,7 @@ const nav = [
 const adminNav = [
   { to: "/admin", label: "Control Panel", icon: Shield },
   { to: "/admin/mother-api", label: "Mother API", icon: Radio },
+  { to: "/admin/users", label: "Users", icon: Users },
   { to: "/admin/businesses", label: "Businesses", icon: Building2 },
   { to: "/admin/api-usage", label: "API Usage", icon: Activity },
   { to: "/admin/fraud", label: "Fraud Logs", icon: AlertTriangle },

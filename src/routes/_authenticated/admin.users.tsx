@@ -56,11 +56,11 @@ function AdminUsers() {
 
   return (
     <AppShell>
-      <PageHeader title="Users" subtitle="Every signup — reset passwords or grant admin." >
+      <PageHeader title="Users" subtitle="Every signup — reset passwords or grant admin." action={
         <button onClick={() => setShowCreate((v) => !v)} className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
           <UserPlus className="h-3.5 w-3.5" /> New user
         </button>
-      </PageHeader>
+      } />
 
       <div className="space-y-4 p-4 md:p-6">
         {showCreate && (
